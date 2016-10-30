@@ -1,0 +1,173 @@
+body {
+    background-image: url("pokemon_go-1.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: black;
+}
+
+div {
+	margin: 0px;
+	padding: 0px;
+}
+
+div div {
+	position: relative;
+}
+
+.pokeBall {
+	height: 600px;
+	width: 600px;
+	margin: 100px auto;
+}
+
+.overlay {
+  top: -910px;
+  left: 0;
+  margin: auto;
+  width: 400px;
+  height: 400px;
+  background: -moz-radial-gradient(transparent 400px, rgba(0,0,0,1) 400px);
+  background: -webkit-radial-gradient(transparent 400px, rgba(0,0,0,1) 400px);
+  background: -ms-radial-gradient(transparent 150px, rgba(0,0,0,1) 150px);
+  background: -o-radial-gradient(transparent 150px, rgba(0,0,0,1) 150px);
+    border: 6px solid black;
+    border-radius: 200px 200px 200px 200px;
+  pointer-events: none; /* send mouse events beneath this layer */
+}
+
+.top {
+    background: #D33F59;
+	height: 200px;
+	width: 400px;
+	top: 20px;
+    margin: auto;
+    border: 5px solid black;
+	border-radius: 200px 200px 0 0;
+}
+
+.bottom {
+    background: #E1DEF1;
+	height: 200px;
+	width: 400px;
+	top: 12px;
+    margin: auto;
+    border: 5px solid black;
+	border-radius: 0px 0px 200px 200px;
+}
+
+.topCircle {
+    background: #585465;
+    height: 50px;
+	width: 110px;
+    position: absolute;
+    bottom: 5px;
+    left: 145px;
+    border: 5px solid black;
+	border-radius: 200px 200px 0 0;
+}
+
+.bottomCircle {
+    background: #585465;
+    height: 50px;
+	width: 110px;
+    position: absolute;
+    top: 5px;
+    left: 145px;
+    border: 5px solid black;
+	border-radius: 0 0 200px 200px;
+}
+
+.topBar {
+    background: #585465;
+    height: 30px;
+    width: 400px;
+    position: absolute;
+    left: -5px;
+    bottom: -5px;
+    border-top: 5px solid black;
+    border-left: 5px solid black;
+    border-right: 5px solid black;
+    border-radius: 8px 8px 0 0;
+}
+
+.bottomBar {
+    background: #585465;
+    height: 30px;
+    width: 400px;
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    border-bottom: 5px solid black;
+    border-left: 5px solid black;
+    border-right: 5px solid black;
+    border-radius: 0 0 8px 8px;
+}
+
+.topBar2 {
+    background: #585465;
+    height: 30px;
+    width: 400px;
+    position: absolute;
+    left: -4px;
+    bottom: -5px;
+}
+
+.bottomBar2 {
+    background: #585465;
+    height: 30px;
+    width: 400px;
+    position: absolute;
+    left: -4px;
+    top: -5px;
+}
+
+.innerCircle {
+    background: #E1DEF1;
+	height: 75px;
+	width: 75px;
+	top: -232px;
+    left: 5px;
+    margin: auto;
+    border: 2px solid black;
+	border-radius: 200px 200px 200px 200px;
+}
+
+.innerInnerCircle {
+    box-sizing: border-box;
+    z-index: 10;
+    background: #E1DEF1;
+	height: 50px;
+	width: 50px;
+	top: 13px;
+    left: 0px;
+    margin: auto;
+    border: 2px solid black;
+	border-radius: 200px 200px 200px 200px;
+}
+
+div .innerInnerCircle:active {
+    background-color: #D33F59;
+    border: 5px solid #F2D8E1;
+}
+
+.whiteShadow {
+    background: #F2D8E1;
+	height: 30px;
+	width: 130px;
+	top: -436px;
+    left: 116px;
+    margin: auto;
+	border-radius: 35% 35% 50% 50%;
+    transform: rotate(38deg);
+}
+
+.greyShadow {
+    width: 400px;
+    height: 400px;
+    top: -545px;
+    left: 120px;
+    -webkit-radial-gradient(transparent 400px, rgba(0,0,0,1) 400px);
+    border-radius: 0% 50% 60% 50%;
+    box-shadow: 40px 40px 0 0 rgba(0, 0, 0, 0.1);;
+    transform: rotate(70deg);
+}
