@@ -228,7 +228,18 @@ div .innerInnerCircle:active {
 
 #score_board {
     background-color: teal;
-    height: 100px;
-    width: 600px;
+    height: 182px;
+    width: 842px;
     margin-top: 25px;
+}
+
+.poke_cell {
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px solid black;
+    height: 26px;
+    width: 26px;
+    margin-top: 2px;
+    margin-left: 2px;
+    display: inline-block;
 }

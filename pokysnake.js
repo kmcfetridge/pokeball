@@ -185,8 +185,9 @@ $(document).ready(function() {
             $(this).append('<canvas id="canvas" height="520" width="840"></canvas>');
             $(this).append('<div id="score_board"></div>');
             for(var i = 0;i < 151;i++) {
-                $("#score_board").append('<div class="poke_cell" id="' + i + '">' + i + '</div>');
+                $("#score_board").append('<div class="poke_cell" id="' + i + '">&nbsp;</div>');
             }
+            $(".poke_cell").css('background-image', 'url(pokeQuestion)');
            init_home();
        }).fadeTo(1000, 1);
     });
