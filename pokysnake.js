@@ -179,8 +179,15 @@ $(document).ready(function() {
     ///////////////////////////////////////////////////////////////
     // Panal three - fade in game canas and pokemon board
     // begin game
-    $(document).on('click', '#play_button', function() { 
-        $("#game_area").fadeTo(1000, 0, function() {
+    var has_been_clicked = false;
+    $(document).on('click', '#play_button', function() {
+        // logic so multiple clicks are not excepted
+        if(has_been_clicked) {
+            return;
+        }
+        
+        has_been_clicked = true;
+        $("#game_area").fadeTo(1000, 0, function(event) {
             $(".intro_screen").remove(); 
             $(this).append('<canvas id="canvas" height="520" width="840"></canvas>');
             $(this).append('<div id="score_board"></div>');
@@ -197,7 +204,7 @@ $(document).ready(function() {
     // Try again button.
     function game_over() {
         $("#canvas").fadeOut(1000);
-        
+        has_been_clicked = false;
         $("#game_area").fadeTo(1000, 0, function() {
            $("#canvas").remove();
            $("#score_board").before('<p class="intro_screen">You didnt catch them all?</br>Oh Noes!</br>Get back out there!</br>Real Pokemon Trainers don\'t give up</p><div id="play_again_button" class="intro_screen"><span style="vertical-align: center">LETS GO!</span></div>');
@@ -213,7 +220,11 @@ $(document).ready(function() {
     ///////////////////////////////////////////////////////////////
     // Panal five - fade in game canas and pokemon board
     // begin game
-    $(document).on('click', '#play_again_button', function() { 
+    $(document).on('click', '#play_again_button', function() {
+        if(has_been_clicked) {
+            return;
+        }
+        has_been_clicked = true;
         $("#game_area").fadeTo(1000, 0, function() {
            $(".intro_screen").remove(); 
            $("#score_board").before('<canvas id="canvas" height="520" width="840"></canvas>');
