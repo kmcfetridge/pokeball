@@ -5,6 +5,7 @@ $(document).ready(function() {
     var ctx;
     var w;
     var h;
+    var pokeSnake;
     var pokeArray;
     var game_loop;
     var pokemon;
@@ -12,7 +13,7 @@ $(document).ready(function() {
     var pokemon_image = new Image();
     var col;
     var row;
-    var count = 0;
+    var count;
     var checkTime = 0;
     pokeball_image.src = "pokeball_sprite.png";
     pokemon_image.src = "pokemon_sprite_sheet.png";
@@ -24,13 +25,14 @@ $(document).ready(function() {
         w = $('#canvas').width();
         h = $('#canvas').height();
         cw = 40;
-  
+   
         init_game();
     }
     
     function init_game() {
         d = "right";
-        
+        count = 0;
+        create_random_pokemon();
         create_snake();
         create_pokemon();
         if(typeof game_loop != "undefined") {
@@ -39,17 +41,32 @@ $(document).ready(function() {
         game_loop = setInterval(paint, 140);
     }
     
+    function create_random_pokemon() {
+        pokeArray = [];
+        for(var i = 0;i < 151;i++) {
+            pokeArray.push(i);
+        }
+        
+        for(var i = 0;i < pokeArray.length;i++) {
+            var swapX = Math.floor((Math.random() * 151));
+            var swapY = Math.floor((Math.random() * 151));
+            var temp = pokeArray[swapX];
+            pokeArray[swapX] = pokeArray[swapY];
+            pokeArray[swapY] = temp;
+        }
+    }
+    
     function create_snake() {
         var length = 1;
-        pokeArray = [];
+        pokeSnake = [];
         for(var i = length - 1;i >= 0;i--) {
-            pokeArray.push({x:i, y:0});
+            pokeSnake.push({x:i, y:0});
         }
     }
     
     function create_pokemon() {
-        row = Math.floor(count / 12);
-        col = count % 12;
+        row = Math.floor(pokeArray[count] / 12);
+        col = pokeArray[count] % 12;
         count++;
         pokemon = {
             x: Math.round(Math.random() * (w - cw) / cw),
@@ -60,8 +77,8 @@ $(document).ready(function() {
     function paint() {
         ctx.clearRect(0, 0, w, h);
         
-        var nx = pokeArray[0].x;
-        var ny = pokeArray[0].y;
+        var nx = pokeSnake[0].x;
+        var ny = pokeSnake[0].y;
         
         if(d == "right") {
             nx++;
@@ -73,7 +90,7 @@ $(document).ready(function() {
             ny++
         }
         
-        if(nx == -1 || nx == w / cw || ny == -1 || ny == h / cw || check_collision(nx, ny, pokeArray)) {
+        if(nx == -1 || nx == w / cw || ny == -1 || ny == h / cw || check_collision(nx, ny, pokeSnake)) {
             clearInterval(game_loop);
             game_over();
             //return;
@@ -83,14 +100,14 @@ $(document).ready(function() {
             var tail = {x:nx, y:ny};
             create_pokemon();
         } else {
-            var tail = pokeArray.pop();
+            var tail = pokeSnake.pop();
             tail.x = nx;
             tail.y = ny;
         }
-        pokeArray.unshift(tail);
+        pokeSnake.unshift(tail);
         
-        for(var i = 0;i < pokeArray.length;i++) {
-            var c = pokeArray[i];
+        for(var i = 0;i < pokeSnake.length;i++) {
+            var c = pokeSnake[i];
             ctx.drawImage(pokeball_image, 0, 0, 64, 64, c.x * cw, c.y * cw, cw, cw);
             /*ctx.fillStyle = "blue";
             ctx.fillRect(c.x * cw, c.y * cw, cw, cw);
@@ -165,8 +182,11 @@ $(document).ready(function() {
     $(document).on('click', '#play_button', function() { 
         $("#game_area").fadeTo(1000, 0, function() {
             $(".intro_screen").remove(); 
-           $(this).append('<canvas id="canvas" height="520" width="840"></canvas>');
-           $(this).append('<div id="score_board"></div>');
+            $(this).append('<canvas id="canvas" height="520" width="840"></canvas>');
+            $(this).append('<div id="score_board"></div>');
+            for(var i = 0;i < 151;i++) {
+                $("#score_board").append('<div class="poke_cell" id="' + i + '">' + i + '</div>');
+            }
            init_home();
        }).fadeTo(1000, 1);
     });
