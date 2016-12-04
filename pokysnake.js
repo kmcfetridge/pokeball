@@ -72,8 +72,8 @@ $(document).ready(function() {
         
         //make random swaps of array cells
         for(var i = 0;i < pokeArray.length;i++) {
-            var swapX = Math.floor((Math.random() * 151));
-            var swapY = Math.floor((Math.random() * 151));
+            var swapX = Math.floor((Math.random() * 150));
+            var swapY = Math.floor((Math.random() * 150));
             var temp = pokeArray[swapX];
             pokeArray[swapX] = pokeArray[swapY];
             pokeArray[swapY] = temp;
@@ -136,9 +136,9 @@ $(document).ready(function() {
             //create a new head with the coord of the pokemon
             //the pokemon will become the new head
             var head = {x:nx, y:ny};
-            if(new_capture(count-1)) {
+            if(new_capture(count - 1)) {
                 //show the pokemon in the pokedex
-                update_pokedex(count-1);
+                update_pokedex(count - 1);
             }
             
             //if all 150 pokemon have been captured, player wins
@@ -147,9 +147,10 @@ $(document).ready(function() {
                 clearInterval(game_loop);
                 //call transsition function
                 game_win();
+            } else {
+                //make the next pokemon
+                create_pokemon();
             }
-            //make the next pokemon
-            create_pokemon();
         } else {
             //it did not run into the pokemon
             //pop the tail of the poke snake
@@ -220,7 +221,8 @@ $(document).ready(function() {
     //checks if the pokemon has been captured before, if not, flag it
     function new_capture(index) {
         if(captured_flags[pokeArray[index]] == 0){
-            captured_flags[pokeArray[index]] == 1;
+            alert(pokeArray[index] + "  :  " + captured_flags[pokeArray[index]]);
+            captured_flags[pokeArray[index]] = 1;
             flags++;
             return true;
         }
