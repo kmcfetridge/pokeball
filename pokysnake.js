@@ -74,9 +74,19 @@ $(document).ready(function() {
         for(var i = 0;i < pokeArray.length;i++) {
             var swapX = Math.floor((Math.random() * 150));
             var swapY = Math.floor((Math.random() * 150));
-            var temp = pokeArray[swapX];
-            pokeArray[swapX] = pokeArray[swapY];
-            pokeArray[swapY] = temp;
+            if(captured_flags[pokeArray[swapX]] == captured_flags[pokeArray[swapY]]) {
+                var temp = pokeArray[swapX];
+                pokeArray[swapX] = pokeArray[swapY];
+                pokeArray[swapY] = temp;
+            } else {
+                var min = Math.min(swapX, swapY);
+                var max = Math.max(swapX, swapY);
+                if(captured_flags[pokeArray[swapX]] == 1 && swapX == min || captured_flags[pokeArray[swapY]] == 1 && swapY == min) {
+                    var temp = pokeArray[swapX];
+                    pokeArray[swapX] = pokeArray[swapY];
+                    pokeArray[swapY] = temp;
+                }
+            }
         }
     }
     
@@ -221,7 +231,6 @@ $(document).ready(function() {
     //checks if the pokemon has been captured before, if not, flag it
     function new_capture(index) {
         if(captured_flags[pokeArray[index]] == 0){
-            alert(pokeArray[index] + "  :  " + captured_flags[pokeArray[index]]);
             captured_flags[pokeArray[index]] = 1;
             flags++;
             return true;
