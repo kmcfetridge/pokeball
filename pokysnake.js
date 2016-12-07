@@ -1,3 +1,9 @@
+/************************************
+*Coded by Kenneth McFetridge
+*for Tealya Lord
+*Happy Birthday!
+*************************************/
+
 $(document).ready(function() {
     var cw;             //this is the width of the pokeballs
     var d;              //this is the direction the pokeballs are moving
@@ -28,6 +34,9 @@ $(document).ready(function() {
     }
     //count of flags, when it hits 150, player wins
     var flags = 0;
+    var total = 0;
+    var new_poke = 0;
+    var rounds = 0;
     
     //initilize the canvas
     function init_home() {
@@ -49,6 +58,8 @@ $(document).ready(function() {
         d = "right";
         //reset the count
         count = 0;
+        rounds++;
+        new_poke = flags;
         //randomize the pokemon
         create_random_pokemon();
         //create the head of the snake
@@ -73,19 +84,37 @@ $(document).ready(function() {
         //make random swaps of array cells
         for(var i = 0;i < pokeArray.length;i++) {
             var swapX = Math.floor((Math.random() * 150));
-            var swapY = Math.floor((Math.random() * 150));
-            if(captured_flags[pokeArray[swapX]] == captured_flags[pokeArray[swapY]]) {
+            if(captured_flags[pokeArray[swapX]] === captured_flags[pokeArray[i]]) {
                 var temp = pokeArray[swapX];
-                pokeArray[swapX] = pokeArray[swapY];
-                pokeArray[swapY] = temp;
+                pokeArray[swapX] = pokeArray[i];
+                pokeArray[i] = temp;
             } else {
-                var min = Math.min(swapX, swapY);
-                var max = Math.max(swapX, swapY);
-                if(captured_flags[pokeArray[swapX]] == 1 && swapX == min || captured_flags[pokeArray[swapY]] == 1 && swapY == min) {
+                var min = Math.min(swapX, i);
+                if((captured_flags[pokeArray[swapX]] == 1 && swapX == min) || (captured_flags[pokeArray[i]] == 1 && i == min)) {
                     var temp = pokeArray[swapX];
-                    pokeArray[swapX] = pokeArray[swapY];
-                    pokeArray[swapY] = temp;
+                    pokeArray[swapX] = pokeArray[i];
+                    pokeArray[i] = temp;
                 }
+            }
+        }
+        
+        for(var i = 0;i < pokeArray.length;i++) {
+            var swapX = Math.floor((Math.random() * 150));
+            var min = Math.min(swapX, i);
+            if((captured_flags[pokeArray[swapX]] == 1 && swapX == min) || (captured_flags[pokeArray[i]] == 1 && i == min)) {
+                var temp = pokeArray[swapX];
+                pokeArray[swapX] = pokeArray[i];
+                pokeArray[i] = temp;
+            }
+        }
+        
+        for(var i = 0;i < pokeArray.length;i++) {
+            var swapX = Math.floor((Math.random() * 150));
+            var min = Math.min(swapX, i);
+            if((captured_flags[pokeArray[swapX]] == 1 && swapX == min) || (captured_flags[pokeArray[i]] == 1 && i == min)) {
+                var temp = pokeArray[swapX];
+                pokeArray[swapX] = pokeArray[i];
+                pokeArray[i] = temp;
             }
         }
     }
@@ -105,9 +134,16 @@ $(document).ready(function() {
         //next time we creat a pokemon we will use the next cell in the array
         count++;
         //find a random x and y coord for the pokemon on the canvas
-        pokemon = {
-            x: Math.round(Math.random() * (w - cw) / cw),
-            y: Math.round(Math.random() * (h - cw) / cw)
+        var find_spot = true;
+        while(find_spot) {
+            pokemon = {
+                x: Math.round(Math.random() * (w - cw) / cw),
+                y: Math.round(Math.random() * (h - cw) / cw)
+            }
+            
+            if(!check_collision(pokemon.x, pokemon.y, pokeSnake)) {
+                find_spot = false;
+            }
         }
     }
         
@@ -145,6 +181,7 @@ $(document).ready(function() {
             //it ran into a pokemon
             //create a new head with the coord of the pokemon
             //the pokemon will become the new head
+            total++;
             var head = {x:nx, y:ny};
             if(new_capture(count - 1)) {
                 //show the pokemon in the pokedex
@@ -191,7 +228,7 @@ $(document).ready(function() {
     //check collision of the pokesnake with itself
     //simple loop that checks if the head is intersection with any pokeSnake cell
     function check_collision(x, y, array) {
-        for(var i = 1;i < array.length;i++) {
+        for(var i = 0;i < array.length;i++) {
             if(array[i].x == x && array[i].y == y) {
                 return true;
             }
@@ -274,7 +311,7 @@ $(document).ready(function() {
        $(".wrap").fadeTo(2000, 0, function() {
            $(".ball").remove();
            $(this).css('background-image', 'url(vulpix_fire_and_ice.png)');
-           $(this).append('<div id="game_area"><p class="intro_screen">Lets Play Poky Snake!</br>Its just like snake, but with Pokemon.</br>Can you catch them all?</p><div id="play_button" class="intro_screen"><span style="vertical-align: center">Heck Ya!</span></div></div>');
+           $(this).append('<div id="game_area"><p class="intro_screen">Lets Play Poky Snake!</br>Its just like snake, but with Pokemon.</br>Can you catch them all?</br><em>Use &larr; &uarr; &darr; &rarr; keys<em></p><div id="play_button" class="intro_screen"><span style="vertical-align: center">Heck Ya!</span></div></div>');
        }).fadeTo(2000, 1);
     });
     
@@ -319,7 +356,7 @@ $(document).ready(function() {
         has_been_clicked = false;
         $("#game_area").fadeTo(1000, 0, function() {
            $("#canvas").remove();
-           $("#score_board").before('<p class="intro_screen">You didnt catch them all?</br>Oh Noes!</br>Get back out there!</br>Real Pokemon Trainers don\'t give up</p><div id="play_again_button" class="intro_screen"><span style="vertical-align: center">LETS GO!</span></div>');
+           $("#score_board").before('<p class="intro_screen">Oh Noes! You didnt catch them all?</br>Get back out there! Real Pokemon Trainers don\'t give up</br>Round ' + rounds + ' : Caught ' + (flags-new_poke) + ' new Pokemon.</br>You have caught ' + flags + ' unique pokemon.</br></p><div id="play_again_button" class="intro_screen"><span style="vertical-align: center">LETS GO!</span></div>');
        }).fadeTo(1000, 1);
     }
     
@@ -351,7 +388,37 @@ $(document).ready(function() {
         has_been_clicked = false;
         $("#game_area").fadeTo(1000, 0, function() {
            $("#canvas").remove();
-           $("#score_board").before('<p class="intro_screen">You caught them all! George Takei says "Oh My!"</br>Happy Birthday Brittany! Love Ya!</br>A present? I thought this was it...</br>Candy?<div id="bday_banner"></div></p>');
+           $("#score_board").before('<p class="intro_screen">You caught them all! George Takei says "Oh My!"</br>Happy Birthday Brittany!</br>A present? I thought this was it...I have some chocolate.</br> I was going to eat it, but I guess if you made it this far then I suppose its yours.<span style="text-shadow: 0px 0px #000;">&#128527;</span></br>Total rounds played: ' + rounds + ' : Caught a total of ' + total + ' Pokemon.</br><div id="bday_banner"></div></p>');
        }).fadeTo(1000, 1);
     }
+    
+    //hides the mouse curser when not moving
+    $(function () {
+        var timer;
+        var fadeInBuffer = false;
+        //clears timer if mouse moves
+        $(document).mousemove(function () {
+            if (!fadeInBuffer) {
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = 0;
+                }
+                
+                //shows mouse immeditaly
+                $('html').css({
+                    cursor: ''
+                });
+            } else {
+                fadeInBuffer = false;
+            }
+
+            timer = setTimeout(function () {
+                //fades out mouse after one sec
+                $('html').css({
+                    cursor: 'none'
+                });
+                fadeInBuffer = true;
+            }, 1000)
+        });
+    });
 });
